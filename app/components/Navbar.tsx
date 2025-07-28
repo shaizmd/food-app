@@ -104,24 +104,6 @@ const Navbar: React.FC<NavbarProps> = ({
             <SignedIn>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
-            {/* <button
-              onClick={onProfileClick}
-              className="flex items-center space-x-2 text-black hover:text-red-500 transition-colors duration-200 cursor-pointer"
-            >
-              <User className="h-6 w-6" />
-              {userLoggedIn && (
-                <span className="text-sm font-medium">Profile</span>
-              )}
-            </button>
-
-            {/* Login/Signup Button */}
-            {/* <Link href="/sign-in">
-              {!userLoggedIn && (
-                <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 cursor-pointer">
-                  Sign In
-                </button>
-              )}
-            </Link>  */}
           </div>
 
           {/* Mobile menu button */}
