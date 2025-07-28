@@ -1,103 +1,214 @@
-import Image from "next/image";
+"use client"
+import React from 'react';
+import { Search, MapPin, Clock, Star, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+interface LandingPageProps {
+  onSearch?: (query: string) => void;
+  onLocationClick?: () => void;
+  onOrderNow?: () => void;
 }
+
+const LandingPage: React.FC<LandingPageProps> = ({
+  onSearch,
+  onLocationClick,
+  onOrderNow
+}) => {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const handleSearch = () => {
+    if (onSearch && searchQuery.trim()) {
+      onSearch(searchQuery.trim());
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const popularCategories = [
+    { name: 'Pizza', emoji: '🍕', count: '50+ restaurants' },
+    { name: 'Burgers', emoji: '🍔', count: '35+ restaurants' },
+    { name: 'Asian', emoji: '🍜', count: '40+ restaurants' },
+    { name: 'Desserts', emoji: '🍰', count: '25+ restaurants' }
+  ];
+
+  const userReviews = [
+    { 
+      name: 'Priya Sharma', 
+      rating: 3, 
+      review: 'Amazing service! Food arrived hot and fresh in just 20 minutes. The variety of restaurants is incredible.',
+      location: 'Koramangala',
+      avatar: '👩'
+    },
+    { 
+      name: 'Rahul Kumar', 
+      rating: 5, 
+      review: 'Best food delivery app I\'ve used. Great prices and the tracking feature is so helpful. Highly recommend!',
+      location: 'Indiranagar',
+      avatar: '👨'
+    },
+    { 
+      name: 'Sneha Patel', 
+      rating: 4, 
+      review: 'Love the app interface and quick delivery. Customer support is very responsive. Will definitely order again.',
+      location: 'Whitefield',
+      avatar: '👩‍💼'
+    }
+  ];
+
+  return (
+    <>
+    <main className="bg-white">
+      {/* Hero Section with Side Image */}
+      <section className="min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-center lg:text-left space-y-8">
+              {/* Main Heading */}
+              <div className="space-y-4 text-center lg:text-left">
+                <h1 className="text-4xl md:text-6xl font-bold text-black">
+                  Delicious food,
+                  <span className="text-green-500 text-shadow-2xl"> delivered fast</span>
+                </h1>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0">
+                  Order from your favorite restaurants and get fresh, hot meals delivered to your doorstep in minutes.
+                </p>
+              </div>
+
+              {/* Location & Search */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-center lg:justify-start space-x-2 text-gray-600">
+                  <MapPin className="h-5 w-5 text-black" />
+                  <button 
+                    onClick={onLocationClick}
+                    className="text-sm hover:text-gray-800 transition-colors duration-200"
+                  >
+                    Delivering to: Bengaluru, Karnataka
+                  </button>
+                </div>
+
+                {/* Hero Search Bar */}
+                <div className="max-w-md mx-auto lg:mx-0">
+                  {/* <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Search className="h-5 w-5 text-gray-500" />
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="Search for restaurants or food..."
+                      className="block w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-300 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-red-100 shadow-lg"
+                    />
+                  </div> */}
+                  <Link href="/menu">
+                    <button
+                      className="mt-4 w-full bg-green-500 hover:bg-green-300 text-white py-4 px-8 rounded-full text-lg font-medium transition-colors duration-200 shadow-lg cursor-pointer"
+                    >
+                      View Menu
+                    </button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-8 pt-8">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-black">500+</div>
+                  <div className="text-sm text-gray-600">Restaurants</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-black">25 min</div>
+                  <div className="text-sm text-gray-600">Avg Delivery</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-black">10K+</div>
+                  <div className="text-sm text-gray-600">Happy Customers</div>
+                </div>
+              </div>
+            </div>
+            {/* Right Image */}
+            <div className="lg:order-last">
+              <div className="relative">
+                <img
+                  src="https://images.unsplash.com/photo-1601972602288-3be527b4f18a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Delicious food spread"
+                  className="w-full h-96 lg:h-[500px] object-cover rounded-2xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* User Reviews */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-black">What Our Customers Say</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {userReviews.map((review) => (
+              <div
+                key={review.name}
+                className="bg-white rounded-xl border-2 border-gray-200 p-6 hover:shadow-xl hover:border-gray-300 transition-all duration-200"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-2xl border border-gray-200">
+                    {review.avatar}
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="font-semibold text-black">{review.name}</h3>
+                    <p className="text-sm text-gray-500">{review.location}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${
+                        i < review.rating
+                          ? 'text-yellow-500 fill-current'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-gray-700 leading-relaxed italic">{review.review}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-black mb-4">
+            Ready to Experience our Cuisine?
+          </h2>
+          <p className="text-xl text-gray-600 mb-8">
+            Want to taste the best food in town? Order now and enjoy exclusive offers!
+          </p>
+          <button
+            className="inline-flex items-center bg-green-500 hover:bg-gray-800 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
+          >
+            Order Now
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </button>
+        </div>
+      </section>
+    </main>
+    </>
+  );
+};
+
+export default LandingPage;
