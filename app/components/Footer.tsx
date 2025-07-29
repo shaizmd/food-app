@@ -2,16 +2,13 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Soup } from 'lucide-react';
 
-interface FooterProps {
-  onNewsletterSubmit?: (email: string) => void;
-}
-
-const Footer: React.FC<FooterProps> = ({ onNewsletterSubmit }) => {
+const Footer: React.FC = () => {
   const [email, setEmail] = React.useState('');
 
   const handleNewsletterSubmit = () => {
-    if (onNewsletterSubmit && email.trim()) {
-      onNewsletterSubmit(email.trim());
+    if (email.trim()) {
+      // For now, just show an alert
+      alert('Thank you for subscribing!');
       setEmail('');
     }
   };

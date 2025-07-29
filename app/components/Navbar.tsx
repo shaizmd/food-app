@@ -1,27 +1,18 @@
 "use client"
-import React, { use, useState } from 'react';
-import { Search, ShoppingCart, User, Menu, X, MapPin, Clock, Soup } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ShoppingCart, Menu, X, Soup } from 'lucide-react';
 import { SignedIn, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useStore } from '@/store/store';
 
 interface NavbarProps {
-  cartItemCount?: number;
-  userLoggedIn?: boolean;
   onSearch?: (query: string) => void;
-  onCartClick?: () => void;
-  onProfileClick?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({
-  cartItemCount = useStore((state) => state.cart.length),
-  userLoggedIn = false,
-  onSearch,
-  onCartClick,
-  onProfileClick
-}) => {
+const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const cartItemCount = useStore((state) => state.cart.length);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,13 +47,13 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   className="text-black hover:text-red-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -86,19 +77,14 @@ const Navbar: React.FC<NavbarProps> = ({
           {/* Right side actions */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart */}
-            <button
-              onClick={onCartClick}
-              className="relative p-2 text-black  hover:text-red-500 transition-colors duration-200 cursor-pointer"
-            >
-              <Link href="/cart" className="flex items-center">
-                <ShoppingCart className="h-6 w-6" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItemCount > 99 ? '99+' : cartItemCount}
-                  </span>
-                )}
-              </Link>
-            </button>
+            <Link href="/cart" className="relative p-2 text-black hover:text-red-500 transition-colors duration-200">
+              <ShoppingCart className="h-6 w-6" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                </span>
+              )}
+            </Link>
 
             {/* User Profile */}
             <SignedIn>
@@ -123,34 +109,29 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Mobile menu */}
-      {/* close this immediately after a button click */}
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
+                onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
 
             {/* Mobile cart and profile */}
             <div className="flex items-center justify-between px-3 py-2">
               <Link href="/cart" className="flex items-center space-x-2 text-gray-600 hover:text-red-500">
-              <button
-                onClick={onCartClick}
-                className="flex items-center space-x-2 text-gray-600 hover:text-red-500"
-              >
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart ({cartItemCount})</span>
-              </button>
               </Link>
               <SignedIn>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
             </div>
           </div>
         </div>

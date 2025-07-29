@@ -3,23 +3,12 @@ import React from 'react';
 import { Search, MapPin, Clock, Star, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-interface LandingPageProps {
-  onSearch?: (query: string) => void;
-  onLocationClick?: () => void;
-  onOrderNow?: () => void;
-}
-
-const LandingPage: React.FC<LandingPageProps> = ({
-  onSearch,
-  onLocationClick,
-  onOrderNow
-}) => {
+const LandingPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleSearch = () => {
-    if (onSearch && searchQuery.trim()) {
-      onSearch(searchQuery.trim());
-    }
+    // For now, just navigate to menu page
+    window.location.href = '/menu';
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -83,12 +72,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
               <div className="space-y-4">
                 <div className="flex items-center justify-center lg:justify-start space-x-2 text-gray-600">
                   <MapPin className="h-5 w-5 text-black" />
-                  <button 
-                    onClick={onLocationClick}
-                    className="text-sm hover:text-gray-800 transition-colors duration-200"
-                  >
+                  <span className="text-sm">
                     Delivering to: Bengaluru, Karnataka
-                  </button>
+                  </span>
                 </div>
 
                 {/* Hero Search Bar */}

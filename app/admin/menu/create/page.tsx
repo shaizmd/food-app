@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useActionState, useEffect } from 'react';
+import React, { useState, useActionState, useEffect } from 'react';
 import { X, Plus, DollarSign, Tag, FileText, Edit } from 'lucide-react';
 import UploadExample from '@/app/components/UploadImage';
 import { createMenuItem, updateMenuItem } from '@/actions/menu';
@@ -18,12 +18,6 @@ interface FormState {
   success?: boolean;
   data?: any;
   message?: string;
-}
-
-interface UploadedFile {
-  name: string;
-  size: number;
-  type: string;
 }
 
 interface MenuItem {
@@ -118,16 +112,6 @@ const AddMenuItemForm: React.FC = () => {
     'Seafood',
   ] as const;
 
-  // Remove all the old validation and form handling functions since server action handles this
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
       <div className="max-w-xl mx-auto">
@@ -154,7 +138,7 @@ const AddMenuItemForm: React.FC = () => {
               <button
                 onClick={handleNewItem}
                 type="button"
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center"
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center cursor-pointer"
               >
                 <Plus className="w-4 h-4 mr-1" />
                 New Item

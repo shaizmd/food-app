@@ -132,6 +132,7 @@ export const updateMenuItem = async (id: string, formData: FormData) => {
         });
         return { errors };
     }
+    const previousImageValue = rawData.image || null; // Handle previous image value if needed
 
     try {
         const validatedData = result.data;
@@ -143,7 +144,9 @@ export const updateMenuItem = async (id: string, formData: FormData) => {
                 description: validatedData.description,
                 category: validatedData.category,
                 price: validatedData.price,
-                image: validatedData.image || null,
+                image: typeof validatedData.image === 'string' && validatedData.image !== '' 
+                    ? validatedData.image 
+                    : (typeof previousImageValue === 'string' ? previousImageValue : null), // Ensure image is string or null
             },
         });
 
@@ -189,3 +192,10 @@ export const deleteMenuItem = async (id: string) => {
         };
     }
 };
+
+
+
+
+// https://ik.imagekit.io/bh4z8zgzod/azure-cocktail-table_2O0FRUj_f.jpg?updatedAt=1753778753983
+
+// https://ik.imagekit.io/bh4z8zgzod/azure-cocktail-table_2O0FRUj_f.jpg?updatedAt=1753778753983

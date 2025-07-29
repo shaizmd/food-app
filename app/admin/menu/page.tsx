@@ -43,8 +43,13 @@ const Page = () => {
   }, []);
 
   const handleUpdate = (item: MenuItem) => {
-    // Redirect to create page with item ID for editing
-    router.push(`/admin/menu/create?edit=${item.id}`);
+    try {
+      // Redirect to create page with item ID for editing
+      router.push(`/admin/menu/create?edit=${item.id}`);
+    } catch (error) {
+      console.error('Error navigating to edit page:', error);
+      alert('Failed to open edit page');
+    }
   };
 
   const handleDelete = async (id: string) => {

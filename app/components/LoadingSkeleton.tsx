@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-function LoadingSkeleton({}: Props) {
+function LoadingSkeleton() {
   return (
     <>
         <div className="min-h-screen lg:col-span-2 my-4 container mx-auto px-4">
