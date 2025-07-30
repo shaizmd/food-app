@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           <div className="space-y-3">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                <Soup className="h-4 w-4 text-white" />
+                <Soup className="h-4 w-4 text-black" />
               </div>
               <span className="ml-2 text-xl font-bold text-gray-800">FoodHub</span>
             </div>
@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
                 />
                 <button
                   onClick={handleNewsletterSubmit}
-                  className="absolute h-full right-0 top-0 bottom-1 px-4 bg-green-500 mr-0 hover:bg-black text-white rounded-r-full text-sm font-medium transition-colors duration-200 cursor-pointer"
+                  className="absolute h-full right-0 top-0 bottom-1 px-4 bg-green-500 mr-0 hover:bg-green-300 text-white rounded-r-full text-sm font-medium transition-colors duration-200 cursor-pointer"
                 >
                   Subscribe
                 </button>

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Search, ShoppingCart, Menu, X, Soup } from 'lucide-react';
-import { SignedIn, UserButton } from '@clerk/nextjs';
+import { SignedIn, UserButton, SignedOut, SignInButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useStore } from '@/store/store';
 
@@ -24,38 +24,34 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Menu', href: '/admin/menu' },
-    { name: 'Admin', href: '/admin/menu/create' },
+    { name: 'Orders', href: '/orders' },
+    { name: 'Admin', href: '/admin/menu/create' }
+
   ];
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */} 
-<Link href="/" className="flex items-center">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl"><Soup className="h-5 w-5" /></span>
-              </div>
-              <span className="ml-2 text-2xl font-bold text-gray-800">FoodHub</span>
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+              <Soup className="h-5 w-5 text-black" />
             </div>
-          </div>
+            <span className="text-2xl font-bold text-gray-800">FoodHub</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-black hover:text-red-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-gray-700 hover:text-red-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
 
           {/* Search Bar */}
@@ -77,10 +73,10 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
           {/* Right side actions */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 text-black hover:text-red-500 transition-colors duration-200">
+            <Link href="/cart" className="relative p-2 text-gray-700 hover:text-red-500 transition-colors duration-200">
               <ShoppingCart className="h-6 w-6" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
                   {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
@@ -88,15 +84,36 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
 
             {/* User Profile */}
             <SignedIn>
-              <UserButton afterSignOutUrl="/" />
+              <div className="relative">
+                <div className="size-8 rounded-full overflow-hidden ring-2 ring-gray-200 hover:ring-red-500 transition-all duration-200">
+                  <UserButton
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: {
+                          height: "100%",
+                          width: "100%"
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              </div>
             </SignedIn>
+            <SignedOut>
+              <SignInButton mode='modal'>
+                <button className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer'>
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-black hover:text-red-500 focus:outline-none focus:text-red-500"
+              className="text-gray-700 hover:text-red-500 focus:outline-none focus:text-red-500 p-2"
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -111,12 +128,12 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 border-t border-gray-200">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium"
+                className="text-gray-700 hover:text-red-500 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
@@ -124,14 +141,25 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
             ))}
 
             {/* Mobile cart and profile */}
-            <div className="flex items-center justify-between px-3 py-2">
-              <Link href="/cart" className="flex items-center space-x-2 text-gray-600 hover:text-red-500">
+            <div className="flex items-center justify-between px-3 py-3 border-t border-gray-200 mt-3 pt-3">
+              <Link
+                href="/cart"
+                className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart ({cartItemCount})</span>
               </Link>
               <SignedIn>
                 <UserButton afterSignOutUrl="/" />
               </SignedIn>
+              <SignedOut>
+                <SignInButton mode='modal'>
+                  <button className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer'>
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
             </div>
           </div>
         </div>

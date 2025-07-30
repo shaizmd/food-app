@@ -14,14 +14,41 @@ datasource db {
 }
 
 model MenuItem {
-  id          String   @id @default(cuid())
-  name        String
-  description String
+  id          String      @id @default(cuid())
+  name        String      
+  description String?
   price       Float
   category    String
   image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@map("menu_items")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[] // Relation: one MenuItem has many OrderItems
+
+  @@map("menu_items") // This maps the model to the "menu_items" table in the database
+}
+
+model Order {
+  id              String   @id @default(cuid())
+  userId          String // Clerk user ID
+  amount          Float // total amount
+  paymentIntentId String // from Stripe
+  createdAt       DateTime @default(now())
+
+  items OrderItem[] // Relation: one Order has many OrderItems
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String
+
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId String
+
+  quantity Int
+
+  @@map("order_items")
 }

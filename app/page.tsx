@@ -185,7 +185,7 @@ const LandingPage: React.FC = () => {
             Want to taste the best food in town? Order now and enjoy exclusive offers!
           </p>
           <button
-            className="inline-flex items-center bg-green-500 hover:bg-gray-800 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
+            className="inline-flex items-center bg-green-500 hover:bg-green-300 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
           >
             Order Now
             <ArrowRight className="ml-2 h-5 w-5" />

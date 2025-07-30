@@ -96,7 +96,6 @@ const MenuPage: React.FC = () => {
       }
 
       const data = await response.json();
-      // console.log('Fetched menu items:', data); // Debug log
       setMenuItems(data);
     } catch (err: unknown) {
       console.error('Error fetching menu items:', err);

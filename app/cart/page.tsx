@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Trash2, Plus, Minus, ShoppingCart, X } from "lucide-react";
+import { Plus, Minus, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { useStore } from "@/store/store";
 
@@ -12,20 +12,52 @@ const CartPage = () => {
     const tax = subtotal * taxRate;
     const total = subtotal + tax;
 
+    const handleCheckout = async () => {
+        try {
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cartItems: cart }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url; // Redirect to Stripe checkout
+                } else {
+                    throw new Error('No checkout URL received');
+                }
+            } else {
+                // Try to parse error response
+                let errorMessage = 'Failed to initiate checkout. Please try again.';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.error || errorMessage;
+                } catch (parseError) {
+                    console.error('Error parsing response:', parseError);
+                }
+                
+                console.error('Checkout error:', errorMessage);
+                alert(errorMessage);
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Failed to initiate checkout. Please check your connection and try again.');
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
             <div className="container mx-auto px-2 sm:px-4">
-
-
-
-
                 {cart.length === 0 ? (
                     <div className="text-center py-8 sm:py-12 px-4">
                         <ShoppingCart className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" />
                         <p className="text-base sm:text-lg font-medium text-gray-500">Your cart is empty</p>
                         <p className="text-sm text-gray-400 mt-1">Add some items to get started</p>
                         <Link href="/menu">
-                            <button className="mt-4 sm:mt-6 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 cursor-pointer">
+                            <button className="mt-4 sm:mt-6 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                                 Browse Menu
                             </button>
                         </Link>
@@ -108,7 +140,7 @@ const CartPage = () => {
                                         <table className="w-full">
                                             <tbody className="bg-white divide-y divide-gray-200">
                                                 {cart.map((item) => (
-                                                    <tr key={item.id} className="">
+                                                    <tr key={item.id}>
                                                         <td className="px-6 py-4">
                                                             <div className="flex items-center space-x-4">
                                                                 {item.image ? (
@@ -141,7 +173,7 @@ const CartPage = () => {
                                                             <div className="flex items-center space-x-2">
                                                                 <button
                                                                     onClick={() => decrementQuantity(item.id)}
-                                                                    className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                                                                    className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
                                                                 >
                                                                     <Minus className="w-4 h-4 text-gray-600" />
                                                                 </button>
@@ -150,7 +182,7 @@ const CartPage = () => {
                                                                 </span>
                                                                 <button
                                                                     onClick={() => incrementQuantity(item.id)}
-                                                                    className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                                                                    className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
                                                                 >
                                                                     <Plus className="w-4 h-4 text-gray-600" />
                                                                 </button>
@@ -164,8 +196,7 @@ const CartPage = () => {
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <button
                                                                 onClick={() => removeFromCart(item.id)}
-                                                                className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200 cursor-pointer
-                              "
+                                                                className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200"
                                                             >
                                                                 <X className="w-4 h-4" />
                                                             </button>
@@ -200,13 +231,13 @@ const CartPage = () => {
                                         </div>
                                     </div>
 
-                                    <button className="w-full bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 mb-4 cursor-pointer">
+                                    <button className="w-full bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 mb-4 cursor-pointer" onClick={handleCheckout}>
                                         Proceed to Checkout
                                     </button>
 
                                     <div className="text-center">
                                         <Link href="/menu">
-                                            <button className="text-sm text-gray-600 hover:text-black transition-colors duration-200 cursor-pointer">
+                                            <button className="text-sm text-gray-600 hover:text-black transition-colors duration-200">
                                                 Back to Menu
                                             </button>
                                         </Link>
@@ -215,7 +246,6 @@ const CartPage = () => {
                             </div>
                         </div>
                     </>
-
                 )}
             </div>
         </div>
