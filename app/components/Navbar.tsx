@@ -73,7 +73,6 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
           {/* Right side actions */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart */}
-            <SignedIn>
             <Link href="/cart" className="relative p-2 text-gray-700 hover:text-red-500 transition-colors duration-200">
               <ShoppingCart className="h-6 w-6" />
               {cartItemCount > 0 && (
@@ -82,7 +81,6 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
                 </span>
               )}
             </Link>
-            </SignedIn>
 
             {/* User Profile */}
             <SignedIn>
@@ -144,7 +142,6 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
 
             {/* Mobile cart and profile */}
             <div className="flex items-center justify-between px-3 py-3 border-t border-gray-200 mt-3 pt-3">
-              <SignedIn>
               <Link
                 href="/cart"
                 className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
@@ -153,17 +150,19 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart ({cartItemCount})</span>
               </Link>
-              </SignedIn>
-              <SignedIn>
-                <UserButton afterSignOutUrl="/" />
-              </SignedIn>
-              <SignedOut>
-                <SignInButton mode='modal'>
-                  <button className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer'>
-                    Sign In
-                  </button>
-                </SignInButton>
-              </SignedOut>
+
+              <div className="flex items-center space-x-2">
+                <SignedIn>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton mode='modal'>
+                    <button className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer'>
+                      Sign In
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+              </div>
             </div>
           </div>
         </div>
