@@ -73,14 +73,31 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
           {/* Right side actions */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 text-gray-700 hover:text-red-500 transition-colors duration-200">
-              <ShoppingCart className="h-6 w-6" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-                  {cartItemCount > 99 ? '99+' : cartItemCount}
-                </span>
-              )}
-            </Link>
+            <SignedIn>
+              <Link href="/cart" className="relative p-2 text-gray-700 hover:text-red-500 transition-colors duration-200">
+                <ShoppingCart className="h-6 w-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                    {cartItemCount > 99 ? '99+' : cartItemCount}
+                  </span>
+                )}
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode='modal'>
+                <button 
+                  className="relative p-2 text-gray-700 hover:text-red-500 transition-colors duration-200"
+                  onClick={() => sessionStorage.setItem('redirectAfterSignIn', '/cart')}
+                >
+                  <ShoppingCart className="h-6 w-6" />
+                  {cartItemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                      {cartItemCount > 99 ? '99+' : cartItemCount}
+                    </span>
+                  )}
+                </button>
+              </SignInButton>
+            </SignedOut>
 
             {/* User Profile */}
             <SignedIn>
@@ -142,14 +159,30 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
 
             {/* Mobile cart and profile */}
             <div className="flex items-center justify-between px-3 py-3 border-t border-gray-200 mt-3 pt-3">
-              <Link
-                href="/cart"
-                className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <ShoppingCart className="h-5 w-5" />
-                <span>Cart ({cartItemCount})</span>
-              </Link>
+              <SignedIn>
+                <Link
+                  href="/cart"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  <span>Cart ({cartItemCount})</span>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode='modal'>
+                  <button 
+                    className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
+                    onClick={() => {
+                      sessionStorage.setItem('redirectAfterSignIn', '/cart');
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span>Cart ({cartItemCount})</span>
+                  </button>
+                </SignInButton>
+              </SignedOut>
 
               <div className="flex items-center space-x-2">
                 <SignedIn>
