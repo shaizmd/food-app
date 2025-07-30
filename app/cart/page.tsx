@@ -57,7 +57,7 @@ const CartPage = () => {
                         <p className="text-base sm:text-lg font-medium text-gray-500">Your cart is empty</p>
                         <p className="text-sm text-gray-400 mt-1">Add some items to get started</p>
                         <Link href="/menu">
-                            <button className="mt-4 sm:mt-6 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                            <button className="mt-4 sm:mt-6 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 cursor-pointer">
                                 Browse Menu
                             </button>
                         </Link>

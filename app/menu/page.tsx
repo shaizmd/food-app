@@ -22,8 +22,8 @@ interface MenuItemCardProps {
 
 const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart }) => {
   return (
-   <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-[1.05]">
- {/* adding pop animation on hover */}
+    <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-[1.05]">
+      {/* adding pop animation on hover */}
       {/* Image Section */}
       <div className="relative h-48 overflow-hidden">
         {item.image ? (
@@ -67,7 +67,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart }) => {
         {/* Add to Cart Button */}
         <button
           onClick={() => onAddToCart?.(item)}
-          className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-black hover:bg-gray-800 text-white rounded-lg font-medium transition-colors duration-200 cursor-pointer"
+          className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-black hover:bg-gray-800 text-white rounded-lg font-medium transition-all duration-150 ease-in-out cursor-pointer active:scale-95"
         >
           <ShoppingCart className="w-4 h-4" />
           <span>Add to Cart</span>
@@ -81,16 +81,16 @@ const MenuPage: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
 
   const fetchMenuItems = async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Fixed: Added leading slash to API endpoint
       const response = await fetch('/api/menu-items');
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch menu items: ${response.status}`);
       }
@@ -109,7 +109,7 @@ const MenuPage: React.FC = () => {
     fetchMenuItems();
   }, []);
 
- const handleAddToCart = useStore((state) => state.addToCart);
+  const handleAddToCart = useStore((state) => state.addToCart);
 
   if (loading) {
     return (
@@ -136,7 +136,7 @@ const MenuPage: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex justify-center items-center">
         <div className="text-center">
           <div className="text-red-600 text-lg mb-4">Error: {error}</div>
-          <button 
+          <button
             onClick={fetchMenuItems}
             className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
           >
@@ -161,7 +161,7 @@ const MenuPage: React.FC = () => {
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold text-left mb-8 text-gray-800">Our Menu</h1>
-        
+
         {/* Grid layout for multiple cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {menuItems.map((menuItem) => (
