@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { DollarSign, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Image, ImageKitProvider } from '@imagekit/next';
 import { useStore } from '@/store/store';
 

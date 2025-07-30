@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useActionState, useEffect } from 'react';
+import React, { useState, useActionState, useEffect, Suspense } from 'react';
 import { X, Plus, DollarSign, Tag, FileText, Edit } from 'lucide-react';
 import UploadExample from '@/app/components/UploadImage';
 import { createMenuItem, updateMenuItem } from '@/actions/menu';
@@ -329,4 +329,18 @@ const AddMenuItemForm: React.FC = () => {
   );
 };
 
-export default AddMenuItemForm;
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-gray-600">Loading...</div>
+    </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AddMenuItemForm />
+    </Suspense>
+  );
+}

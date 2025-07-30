@@ -1,28 +1,9 @@
 "use client"
 import React from 'react';
-import { Search, MapPin, Clock, Star, ArrowRight } from 'lucide-react';
+import { MapPin, Star, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 const LandingPage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const handleSearch = () => {
-    // For now, just navigate to menu page
-    window.location.href = '/menu';
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
-  const popularCategories = [
-    { name: 'Pizza', emoji: '🍕', count: '50+ restaurants' },
-    { name: 'Burgers', emoji: '🍔', count: '35+ restaurants' },
-    { name: 'Asian', emoji: '🍜', count: '40+ restaurants' },
-    { name: 'Desserts', emoji: '🍰', count: '25+ restaurants' }
-  ];
 
   const userReviews = [
     { 
