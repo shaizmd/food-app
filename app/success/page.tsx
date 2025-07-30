@@ -13,7 +13,7 @@ export default function SuccessPage() {
   }, [clearCart]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 px-4"> 
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4"> 
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
         {/* Success Icon with Animation */}
         <div className="relative mb-6">

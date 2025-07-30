@@ -29,9 +29,10 @@ export default async function MyOrdersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-3xl mx-auto px-4">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">My Orders</h1>
         
+      <div className="max-w-3xl mx-auto px-4">
+      <h1 className="font-bold text-xl sm:text-2xl mb-4 sm:mb-6 px-2 sm:px-0"> My Orders</h1>
+          
         {orders.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center shadow-sm">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
